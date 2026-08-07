@@ -46,6 +46,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setLanguage = (lang: Language) => {
+    console.log("🔄 Language change triggered:", lang, "current:", language);
     setLanguageState(lang);
     localStorage.setItem("language", lang);
     applyLanguage(lang);

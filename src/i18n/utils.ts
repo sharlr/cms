@@ -1,5 +1,8 @@
 import type { Language } from "./config";
 import { DEFAULT_LANGUAGE } from "./config";
+import frTranslations from "./translations/fr.json";
+import enTranslations from "./translations/en.json";
+import arTranslations from "./translations/ar.json";
 
 type TranslationKeys = {
   common: {
@@ -59,9 +62,9 @@ type TranslationKeys = {
 };
 
 const translations: Record<Language, TranslationKeys> = {
-  fr: require("./translations/fr.json"),
-  en: require("./translations/en.json"),
-  ar: require("./translations/ar.json"),
+  fr: frTranslations as TranslationKeys,
+  en: enTranslations as TranslationKeys,
+  ar: arTranslations as TranslationKeys,
 };
 
 export function getTranslation(
