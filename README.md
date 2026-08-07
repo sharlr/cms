@@ -9,19 +9,18 @@ L'interface est en français et responsive du téléphone au grand écran.
 
 ## Démarrer
 
+Avec Docker (PostgreSQL inclus) :
+
+```bash
+docker compose up -d --build
+```
+
+En local (PostgreSQL doit tourner, voir `.env.example`) :
+
 ```bash
 npm install
-```
-
-```bash
 npx prisma migrate dev
-```
-
-```bash
 npx tsx prisma/seed.ts
-```
-
-```bash
 npm run dev
 ```
 
@@ -44,7 +43,7 @@ Comptes créés par le seed :
 ## Architecture
 
 - **Next.js 16** (App Router, Server Components, Server Actions) + **React 19**
-- **Prisma 7** sur **SQLite** — bascule vers PostgreSQL en changeant le `datasource`
+- **Prisma 7** sur **PostgreSQL** (`@prisma/adapter-pg`)
 - **Tailwind CSS 4** — système visuel dans `src/app/globals.css`
 - Session par **JWT** en cookie `httpOnly` (`jose`), mots de passe **bcrypt**
 
@@ -119,4 +118,4 @@ l'envoi du courriel jumeau est journalisé sans être effectué.
 57 tests couvrent la correction des réponses, le moteur de chronométrage
 (armement, tolérance, reprise après abandon, interdiction du retour en arrière),
 la disponibilité des concours, le classement et l'import Excel. Ils s'exécutent
-sur une base `test.db` dédiée, recréée à chaque lancement.
+sur une base PostgreSQL `cms_test` dédiée, recréée à chaque lancement.

@@ -8,12 +8,17 @@
  */
 import "dotenv/config";
 import bcrypt from "bcryptjs";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma";
 import type { City, EducationLevel, Gender } from "../src/generated/prisma";
 
+const url = process.env.DATABASE_URL;
+if (!url) {
+  throw new Error("DATABASE_URL manquant dans l'environnement.");
+}
+
 const prisma = new PrismaClient({
-  adapter: new PrismaBetterSqlite3({ url: process.env.DATABASE_URL ?? "file:./dev.db" }),
+  adapter: new PrismaPg({ connectionString: url }),
 });
 
 const CANDIDATES: {

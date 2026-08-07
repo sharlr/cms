@@ -9,11 +9,10 @@ export default defineConfig({
     environment: "node",
     include: ["tests/**/*.test.ts"],
     globalSetup: ["tests/globalSetup.ts"],
-    // Base de test dédiée, distincte de dev.db. Les suites qui touchent la base
-    // partagent un fichier unique : elles s'exécutent en série pour éviter les
-    // verrous SQLite concurrents.
     env: {
-      DATABASE_URL: "file:./test.db",
+      DATABASE_URL:
+        process.env.DATABASE_URL ??
+        "postgresql://cms:cms@localhost:5432/cms_test",
       AUTH_SECRET: "test-secret-0123456789abcdef0123456789abcdef",
     },
     fileParallelism: false,
