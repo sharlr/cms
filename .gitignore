@@ -63,3 +63,8 @@ next-env.d.ts
 
 # sauvegarde temporaire du script d'anonymisation
 /scripts/.personal-backup.json
+
+# outillage d'assistant — utile en local, hors du produit livré
+/.claude/
+/AGENTS.md
+/CLAUDE.md
