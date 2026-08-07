@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  APP_DIR: /var/www/cms.nexusrajan.com
+  APP_DIR: /cms
 
 jobs:
   deploy:
@@ -26,15 +26,16 @@ jobs:
       - name: Pack release
         run: |
           tar \
-            --exclude='./.git' \
-            --exclude='./node_modules' \
-            --exclude='./.next' \
-            --exclude='./.env' \
-            --exclude='./coverage' \
-            --exclude='./docs/preview' \
-            --exclude='./.claude' \
-            --exclude='./cms-release.tar.gz' \
-            -czf cms-release.tar.gz .
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='.next' \
+            --exclude='.env' \
+            --exclude='coverage' \
+            --exclude='docs/preview' \
+            --exclude='.claude' \
+            --warning=no-file-changed \
+            -czf /tmp/cms-release.tar.gz .
+          cp /tmp/cms-release.tar.gz "$GITHUB_WORKSPACE/cms-release.tar.gz"
 
       - name: Upload release to server
         uses: appleboy/scp-action@v0.1.7
@@ -61,10 +62,12 @@ jobs:
           script: |
             set -euo pipefail
 
-            APP_DIR="${{ env.APP_DIR }}"
-            sudo mkdir -p "$APP_DIR" /var/www/certbot
+            APP_DIR="/cms"
+            sudo mkdir -p "$APP_DIR"
             sudo chown -R "$(whoami):$(whoami)" "$APP_DIR"
 
+            # Replace app files in /cms (keep existing .env until rewritten)
+            find "$APP_DIR" -mindepth 1 -maxdepth 1 ! -name '.env' -exec rm -rf {} +
             tar -xzf /tmp/cms-release.tar.gz -C "$APP_DIR"
             rm -f /tmp/cms-release.tar.gz
 
@@ -73,6 +76,7 @@ jobs:
             chmod 600 .env
 
             if [ -f deploy/nginx/cms.nexusrajan.com.conf ]; then
+              sudo mkdir -p /var/www/certbot /etc/nginx/sites-available /etc/nginx/sites-enabled
               sudo cp deploy/nginx/cms.nexusrajan.com.conf /etc/nginx/sites-available/cms.nexusrajan.com.conf
               sudo ln -sfn /etc/nginx/sites-available/cms.nexusrajan.com.conf /etc/nginx/sites-enabled/cms.nexusrajan.com.conf
 
@@ -89,4 +93,4 @@ jobs:
             docker compose up -d --build --remove-orphans
             docker compose ps
 
-            echo "Deployed → https://cms.nexusrajan.com/ (upstream 127.0.0.1:8888)"
+            echo "Deployed → /cms → https://cms.nexusrajan.com/ (upstream 127.0.0.1:8888)"
