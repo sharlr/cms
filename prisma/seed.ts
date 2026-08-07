@@ -436,24 +436,25 @@ async function main() {
 
   await seedEditorialContent();
 
-  const adminEmail = "admin@concourslogique.org";
+  const adminEmail = "administrator@cms.local";
+  const adminPassword = "123*123A";
   await prisma.user.upsert({
     where: { email: adminEmail },
     update: {},
     create: {
-      fullName: "Administratrice du concours",
-      gender: "FEMININ",
-      birthDate: new Date("1990-01-01"),
+      fullName: "Administrator",
+      gender: "MASCULIN",
+      birthDate: new Date("1980-01-01"),
       city: "DJIBOUTI_VILLE",
       educationLevel: "UNIVERSITE",
-      phone: "+22200000000",
+      phone: "+22200000001",
       email: adminEmail,
-      passwordHash: await bcrypt.hash("admin1234", 10),
+      passwordHash: await bcrypt.hash(adminPassword, 10),
       acceptedTerms: true,
       role: "ADMIN",
     },
   });
-  console.log(`  Compte administrateur : ${adminEmail} / admin1234`);
+  console.log(`  Compte administrateur : ${adminEmail} / ${adminPassword}`);
 
   const demoEmail = "candidate@example.com";
   await prisma.user.upsert({
