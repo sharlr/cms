@@ -1,0 +1,1403 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Guide utilisateur — Concours National de Logique</title>
+<style>
+/* ==========================================================================
+   Guide utilisateur — feuille de style d'impression (A4)
+   ========================================================================== */
+
+:root {
+  --indigo: #4644dc;
+  --indigo-dark: #2f2d92;
+  --indigo-light: #eef1ff;
+  --violet: #7c3aed;
+  --violet-light: #f3eeff;
+  --gold: #eaa505;
+  --gold-dark: #96620a;
+  --gold-light: #fff6dd;
+  --emerald: #0e9f6e;
+  --emerald-light: #e4f7ef;
+  --rose: #e02424;
+  --rose-light: #fdeaea;
+  --cyan: #06b6d4;
+  --ink: #0f1435;
+  --ink-soft: #464f77;
+  --ink-faint: #7d86ab;
+  --line: #e2e5f3;
+  --paper: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+@page {
+  size: A4;
+  margin: 16mm 0 18mm;
+}
+
+/* La couverture occupe toute la page : ni marge, ni pied de page. */
+@page :first {
+  margin: 0;
+}
+
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.62;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.sheet { padding: 0 18mm; }
+
+/* ------------------------------------------------------------- couverture */
+
+.cover {
+  position: relative;
+  height: 297mm;
+  padding: 38mm 20mm 24mm;
+  color: #fff;
+  background:
+    radial-gradient(70mm 50mm at 12% 8%, rgba(124, 58, 237, .75), transparent 62%),
+    radial-gradient(80mm 55mm at 92% 18%, rgba(6, 182, 212, .48), transparent 60%),
+    radial-gradient(70mm 50mm at 70% 96%, rgba(234, 165, 5, .45), transparent 62%),
+    linear-gradient(160deg, #221f63 0%, #12103a 55%, #0a0824 100%);
+  break-after: page;
+  overflow: hidden;
+}
+
+.cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) .3mm, transparent .3mm),
+    linear-gradient(90deg, rgba(255,255,255,.05) .3mm, transparent .3mm);
+  background-size: 14mm 14mm;
+  opacity: .6;
+}
+
+.cover > * { position: relative; z-index: 1; }
+
+.cover-badge {
+  display: inline-block;
+  padding: 2mm 5mm;
+  border: .3mm solid rgba(255,255,255,.32);
+  border-radius: 20mm;
+  background: rgba(255,255,255,.1);
+  font-size: 9pt;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.cover h1 {
+  margin: 14mm 0 0;
+  font-size: 40pt;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -.025em;
+}
+
+.cover h1 .accent {
+  display: block;
+  background: linear-gradient(95deg, #ffd45f, #ffe9a8 55%, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.cover .lead {
+  margin-top: 8mm;
+  max-width: 120mm;
+  font-size: 13.5pt;
+  line-height: 1.5;
+  color: rgba(255,255,255,.82);
+}
+
+.cover .quote {
+  margin-top: 4mm;
+  font-size: 11pt;
+  font-style: italic;
+  color: rgba(255,255,255,.6);
+}
+
+.cover-modules {
+  display: flex;
+  gap: 6mm;
+  margin-top: 16mm;
+}
+
+.cover-module {
+  flex: 1;
+  padding: 6mm;
+  border: .3mm solid rgba(255,255,255,.22);
+  border-radius: 4mm;
+  background: rgba(255,255,255,.08);
+}
+
+.cover-module .icon { font-size: 20pt; }
+.cover-module h2 { margin: 3mm 0 1.5mm; font-size: 13pt; font-weight: 700; }
+.cover-module p { margin: 0; font-size: 9.5pt; line-height: 1.5; color: rgba(255,255,255,.7); }
+
+.cover-foot {
+  position: absolute;
+  right: 20mm;
+  bottom: 18mm;
+  left: 20mm;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 5mm;
+  border-top: .3mm solid rgba(255,255,255,.2);
+  font-size: 9pt;
+  color: rgba(255,255,255,.62);
+}
+
+/* ------------------------------------------------------------- sommaire */
+
+.toc { break-after: page; }
+
+.toc h2 {
+  margin: 0 0 4mm;
+  font-size: 22pt;
+  font-weight: 800;
+  letter-spacing: -.02em;
+}
+
+.toc-group { margin-bottom: 3.4mm; }
+
+.toc-group h3 {
+  margin: 0 0 2.2mm;
+  padding-bottom: 1.5mm;
+  border-bottom: .5mm solid var(--indigo);
+  font-size: 11pt;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--indigo);
+}
+
+.toc-row {
+  display: flex;
+  align-items: baseline;
+  gap: 2mm;
+  padding: .5mm 0;
+  font-size: 9.5pt;
+}
+
+.toc-row .num {
+  min-width: 11mm;
+  font-weight: 700;
+  color: var(--ink-faint);
+}
+
+.toc-row .dots {
+  flex: 1;
+  border-bottom: .25mm dotted #c3c8e0;
+  transform: translateY(-1mm);
+}
+
+.toc-row .pg { font-weight: 700; color: var(--ink-soft); }
+
+/* --------------------------------------------------------------- chapitres */
+
+.chapter { break-before: page; }
+
+.chapter-head {
+  display: flex;
+  align-items: center;
+  gap: 5mm;
+  margin-bottom: 6mm;
+  padding: 6mm;
+  border-radius: 4mm;
+  color: #fff;
+  background: linear-gradient(120deg, var(--indigo), var(--violet));
+}
+
+.chapter-head.admin { background: linear-gradient(120deg, #0b7285, var(--cyan)); }
+.chapter-head.intro { background: linear-gradient(120deg, var(--gold-dark), var(--gold)); }
+.chapter-head.annex { background: linear-gradient(120deg, #3f3f57, #6b6b8d); }
+
+.chapter-num {
+  display: grid;
+  place-items: center;
+  width: 16mm;
+  height: 16mm;
+  flex: none;
+  border-radius: 3mm;
+  background: rgba(255,255,255,.18);
+  font-size: 19pt;
+  font-weight: 800;
+}
+
+.chapter-head h2 { margin: 0; font-size: 20pt; font-weight: 800; letter-spacing: -.02em; }
+.chapter-head p { margin: 1mm 0 0; font-size: 9.5pt; color: rgba(255,255,255,.8); }
+
+h3.section {
+  margin: 9mm 0 3mm;
+  padding-left: 3.5mm;
+  border-left: 1.2mm solid var(--indigo);
+  font-size: 14pt;
+  font-weight: 800;
+  letter-spacing: -.015em;
+  break-after: avoid;
+}
+
+.admin-scope h3.section { border-left-color: var(--cyan); }
+
+h4 {
+  margin: 6mm 0 2mm;
+  font-size: 11pt;
+  font-weight: 700;
+  break-after: avoid;
+}
+
+p { margin: 0 0 3mm; }
+p.intro { color: var(--ink-soft); }
+
+a { color: var(--indigo); text-decoration: none; }
+
+code {
+  padding: .4mm 1.4mm;
+  border-radius: 1mm;
+  background: var(--indigo-light);
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 9pt;
+  color: var(--indigo-dark);
+}
+
+/* ------------------------------------------------------------------ étapes */
+
+ol.steps { margin: 3mm 0 4mm; padding: 0; list-style: none; counter-reset: step; }
+
+ol.steps > li {
+  position: relative;
+  margin-bottom: 2.6mm;
+  padding-left: 9mm;
+  counter-increment: step;
+  break-inside: avoid;
+}
+
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  top: -.3mm;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 6mm;
+  height: 6mm;
+  border-radius: 50%;
+  background: var(--indigo);
+  color: #fff;
+  font-size: 8.5pt;
+  font-weight: 700;
+}
+
+.admin-scope ol.steps > li::before { background: var(--cyan); }
+
+ul.bullets { margin: 2mm 0 4mm; padding-left: 5mm; }
+ul.bullets li { margin-bottom: 1.6mm; }
+ul.bullets li::marker { color: var(--indigo); }
+
+/* ------------------------------------------------------------- illustration */
+
+figure {
+  margin: 4mm 0 6mm;
+  break-inside: avoid;
+}
+
+figure img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  /* Plafond de hauteur : une capture trop haute repousserait tout le bloc à la
+     page suivante et laisserait une demi-page blanche. */
+  max-height: 108mm;
+  margin-inline: auto;
+  border: .3mm solid var(--line);
+  border-radius: 3mm;
+  box-shadow: 0 1mm 4mm rgba(15,20,53,.13);
+}
+
+figure.phone { width: 62mm; margin-inline: auto; }
+figure.phone img { max-height: 150mm; }
+figure.phone img { border-radius: 4mm; }
+
+.phone-row {
+  display: flex;
+  gap: 5mm;
+  justify-content: center;
+  margin: 4mm 0 6mm;
+  break-inside: avoid;
+}
+
+.phone-row figure { flex: 1; margin: 0; max-width: 52mm; }
+.phone-row figure img { max-height: 150mm; }
+
+figcaption {
+  margin-top: 2mm;
+  font-size: 8.5pt;
+  line-height: 1.45;
+  color: var(--ink-faint);
+  text-align: center;
+}
+
+figcaption b { color: var(--ink-soft); }
+
+/* --------------------------------------------------------------- encadrés */
+
+.note {
+  margin: 4mm 0;
+  padding: 4mm 5mm;
+  border-left: 1.2mm solid var(--indigo);
+  border-radius: 0 3mm 3mm 0;
+  background: var(--indigo-light);
+  font-size: 9.5pt;
+  line-height: 1.55;
+  break-inside: avoid;
+}
+
+.note strong { display: block; margin-bottom: 1mm; font-size: 10pt; }
+.note p:last-child { margin-bottom: 0; }
+
+.note.warn { border-left-color: var(--rose); background: var(--rose-light); }
+.note.tip { border-left-color: var(--emerald); background: var(--emerald-light); }
+.note.gold { border-left-color: var(--gold); background: var(--gold-light); }
+
+/* --------------------------------------------------------------- tableaux */
+
+table {
+  width: 100%;
+  margin: 3mm 0 5mm;
+  border-collapse: collapse;
+  font-size: 9.5pt;
+  break-inside: avoid;
+}
+
+thead th {
+  padding: 2.4mm 3mm;
+  background: var(--indigo);
+  color: #fff;
+  font-weight: 700;
+  text-align: left;
+}
+
+.admin-scope thead th { background: #0b7285; }
+
+tbody td {
+  padding: 2.2mm 3mm;
+  border-bottom: .25mm solid var(--line);
+  vertical-align: top;
+}
+
+tbody tr:nth-child(even) td { background: #f7f8fd; }
+
+td.key { font-weight: 700; white-space: nowrap; }
+
+/* ------------------------------------------------------------ mise en avant */
+
+.cards { display: flex; gap: 4mm; margin: 4mm 0 5mm; break-inside: avoid; }
+
+.card {
+  flex: 1;
+  padding: 4mm;
+  border: .3mm solid var(--line);
+  border-radius: 3mm;
+  background: #fbfbff;
+}
+
+.card .icon { font-size: 15pt; }
+.card h5 { margin: 1.5mm 0 1mm; font-size: 10pt; font-weight: 700; }
+.card p { margin: 0; font-size: 9pt; line-height: 1.5; color: var(--ink-soft); }
+
+.kpi-row { display: flex; gap: 4mm; margin: 4mm 0 5mm; break-inside: avoid; }
+
+.kpi {
+  flex: 1;
+  padding: 4mm;
+  border-radius: 3mm;
+  background: linear-gradient(160deg, var(--indigo-light), #fff);
+  border: .3mm solid var(--line);
+  text-align: center;
+}
+
+.kpi .v { font-size: 20pt; font-weight: 800; color: var(--indigo); line-height: 1.1; }
+.kpi .l { font-size: 8.5pt; color: var(--ink-soft); }
+
+.pill {
+  display: inline-block;
+  padding: .6mm 2.4mm;
+  border-radius: 10mm;
+  font-size: 8.5pt;
+  font-weight: 700;
+}
+
+.pill.green { background: var(--emerald-light); color: var(--emerald); }
+.pill.gold { background: var(--gold-light); color: var(--gold-dark); }
+.pill.red { background: var(--rose-light); color: var(--rose); }
+.pill.grey { background: #eef0f7; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+
+<!-- ==================================================== COUVERTURE ==== -->
+<div class="cover">
+  <span class="cover-badge">Guide utilisateur · Édition 2026</span>
+
+  <h1>Concours National<span class="accent">de Logique</span></h1>
+
+  <p class="lead">
+    Manuel complet de la plateforme : inscription des candidats, entraînement,
+    concours de sélection chronométré, classement automatique et administration.
+  </p>
+  <p class="quote">« Observez bien… la logique est partout ! »</p>
+
+  <div class="cover-modules">
+    <div class="cover-module">
+      <div class="icon">🎓</div>
+      <h2>Module Candidat</h2>
+      <p>S'inscrire, s'entraîner, passer le concours, consulter ses résultats et son classement.</p>
+    </div>
+    <div class="cover-module">
+      <div class="icon">🛠️</div>
+      <h2>Module Administration</h2>
+      <p>Piloter les concours, les questions, les candidats, les contenus et les exports Excel.</p>
+    </div>
+  </div>
+
+  <div class="cover-foot">
+    <span>Women in STEM · avec le parrainage de la Présidence de la République</span>
+    <span>République de Djibouti</span>
+  </div>
+</div>
+
+<!-- ====================================================== SOMMAIRE ==== -->
+<div class="sheet toc">
+  <h2>Sommaire</h2>
+
+  <div class="toc-group">
+    <h3>Prise en main</h3>
+    <div class="toc-row"><span class="num">1.1</span><span>À qui s'adresse ce guide</span><span class="dots"></span><span class="pg">3</span></div>
+    <div class="toc-row"><span class="num">1.2</span><span>La page d'accueil publique</span><span class="dots"></span><span class="pg">3</span></div>
+    <div class="toc-row"><span class="num">1.3</span><span>Les pages d'information</span><span class="dots"></span><span class="pg">5</span></div>
+  </div>
+
+  <div class="toc-group">
+    <h3>Module Candidat</h3>
+    <div class="toc-row"><span class="num">2.1</span><span>Créer son compte</span><span class="dots"></span><span class="pg">8</span></div>
+    <div class="toc-row"><span class="num">2.2</span><span>Se connecter</span><span class="dots"></span><span class="pg">9</span></div>
+    <div class="toc-row"><span class="num">2.3</span><span>Mon espace : le menu principal</span><span class="dots"></span><span class="pg">10</span></div>
+    <div class="toc-row"><span class="num">2.4</span><span>Les consignes avant l'épreuve</span><span class="dots"></span><span class="pg">11</span></div>
+    <div class="toc-row"><span class="num">2.5</span><span>Répondre aux questions</span><span class="dots"></span><span class="pg">12</span></div>
+    <div class="toc-row"><span class="num">2.6</span><span>Les règles du chronomètre</span><span class="dots"></span><span class="pg">14</span></div>
+    <div class="toc-row"><span class="num">2.7</span><span>Consulter ses résultats</span><span class="dots"></span><span class="pg">14</span></div>
+    <div class="toc-row"><span class="num">2.8</span><span>Le tableau récapitulatif</span><span class="dots"></span><span class="pg">15</span></div>
+    <div class="toc-row"><span class="num">2.9</span><span>Le classement</span><span class="dots"></span><span class="pg">16</span></div>
+    <div class="toc-row"><span class="num">2.10</span><span>Mes participations et mes messages</span><span class="dots"></span><span class="pg">17</span></div>
+    <div class="toc-row"><span class="num">2.11</span><span>Le certificat de participation</span><span class="dots"></span><span class="pg">19</span></div>
+    <div class="toc-row"><span class="num">2.12</span><span>Utiliser l'application sur téléphone</span><span class="dots"></span><span class="pg">19</span></div>
+  </div>
+
+  <div class="toc-group">
+    <h3>Module Administration</h3>
+    <div class="toc-row"><span class="num">3.1</span><span>Accéder à l'administration</span><span class="dots"></span><span class="pg">21</span></div>
+    <div class="toc-row"><span class="num">3.2</span><span>Le tableau de bord</span><span class="dots"></span><span class="pg">21</span></div>
+    <div class="toc-row"><span class="num">3.3</span><span>Gérer les candidats</span><span class="dots"></span><span class="pg">22</span></div>
+    <div class="toc-row"><span class="num">3.4</span><span>Gérer les concours</span><span class="dots"></span><span class="pg">23</span></div>
+    <div class="toc-row"><span class="num">3.5</span><span>Gérer la banque de questions</span><span class="dots"></span><span class="pg">24</span></div>
+    <div class="toc-row"><span class="num">3.6</span><span>Programmer une épreuve</span><span class="dots"></span><span class="pg">26</span></div>
+    <div class="toc-row"><span class="num">3.7</span><span>Importer des questions depuis Excel</span><span class="dots"></span><span class="pg">27</span></div>
+    <div class="toc-row"><span class="num">3.8</span><span>Participations, classement et export</span><span class="dots"></span><span class="pg">29</span></div>
+    <div class="toc-row"><span class="num">3.9</span><span>Publier des actualités</span><span class="dots"></span><span class="pg">30</span></div>
+    <div class="toc-row"><span class="num">3.10</span><span>Modifier les pages du site</span><span class="dots"></span><span class="pg">31</span></div>
+    <div class="toc-row"><span class="num">3.11</span><span>Gérer les partenaires</span><span class="dots"></span><span class="pg">32</span></div>
+    <div class="toc-row"><span class="num">3.12</span><span>Envoyer un message aux candidats</span><span class="dots"></span><span class="pg">33</span></div>
+  </div>
+
+  <div class="toc-group">
+    <h3>Annexes</h3>
+    <div class="toc-row"><span class="num">A</span><span>Règles de correction et de classement</span><span class="dots"></span><span class="pg">35</span></div>
+    <div class="toc-row"><span class="num">B</span><span>Questions fréquentes et dépannage</span><span class="dots"></span><span class="pg">36</span></div>
+  </div>
+</div>
+
+<!-- ================================================ 1. PRISE EN MAIN ==== -->
+<div class="sheet chapter">
+  <div class="chapter-head intro">
+    <div class="chapter-num">1</div>
+    <div>
+      <h2>Prise en main</h2>
+      <p>Ce que propose l'application et à quoi ressemble sa page d'accueil</p>
+    </div>
+  </div>
+
+  <h3 class="section">1.1 &nbsp;À qui s'adresse ce guide</h3>
+  <p class="intro">
+    Ce guide couvre les deux façons d'utiliser la plateforme du Concours National
+    de Logique. Chaque explication est accompagnée d'une capture de l'écran
+    correspondant.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="icon">🎓</div>
+      <h5>Vous êtes candidat</h5>
+      <p>Lisez le chapitre 2. Vous y trouverez tout le parcours, de la création du compte au certificat de participation.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🛠️</div>
+      <h5>Vous êtes administrateur</h5>
+      <p>Lisez le chapitre 3. Il détaille la gestion des concours, des questions, des candidats et des contenus.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Une seule application, deux niveaux d'accès</strong>
+    <p>
+      L'espace d'administration n'est visible que par les comptes disposant du rôle
+      administrateur. Un candidat qui tenterait d'ouvrir une adresse commençant par
+      <code>/admin</code> est automatiquement renvoyé vers son espace personnel.
+    </p>
+  </div>
+
+  <h3 class="section">1.2 &nbsp;La page d'accueil publique</h3>
+  <p>
+    C'est la première page que voit un visiteur. Elle présente le concours, met en
+    avant l'inscription et donne accès à toutes les informations publiques.
+  </p>
+
+  <figure>
+    <img src="captures/01-accueil-public.png" alt="Page d'accueil publique">
+    <figcaption><b>Figure 1</b> — La page d'accueil : identité du concours, slogan, boutons d'inscription et de connexion, et repères chiffrés sur l'épreuve.</figcaption>
+  </figure>
+
+  <p>On y trouve, de haut en bas :</p>
+  <ul class="bullets">
+    <li>le <b>bandeau de navigation</b>, présent sur toutes les pages : actualités, règlement, récompenses, contact ;</li>
+    <li>le <b>bandeau principal</b> avec le nom du concours, la phrase d'accompagnement et les deux boutons d'action ;</li>
+    <li>la <b>prochaine échéance</b>, qui rappelle la date officielle de l'épreuve de sélection ;</li>
+    <li>les trois étapes de participation, les récompenses, les dernières actualités et les partenaires.</li>
+  </ul>
+
+  <figure>
+    <img src="captures/02-accueil-public-bas.png" alt="Page d'accueil complète">
+    <figcaption><b>Figure 2</b> — La page d'accueil dans son ensemble : étapes de participation, récompenses, actualités et bandeau des partenaires.</figcaption>
+  </figure>
+
+  <h3 class="section">1.3 &nbsp;Les pages d'information</h3>
+  <p>
+    Quatre pages publiques complètent l'accueil. Leur contenu est modifiable à tout
+    moment depuis l'administration, sans intervention technique.
+  </p>
+
+  <figure>
+    <img src="captures/05-actualites.png" alt="Page des actualités">
+    <figcaption><b>Figure 3</b> — <b>Actualités</b> : annonces, dates d'inscription, horaires des épreuves, résultats officiels et communiqués. Les publications épinglées apparaissent en tête.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="captures/06-reglement.png" alt="Page du règlement">
+    <figcaption><b>Figure 4</b> — <b>Règlement du concours</b> : conditions d'inscription, déroulement de l'épreuve, critères de classement, récompenses et règles anti-fraude.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="captures/07-recompenses.png" alt="Page des récompenses">
+    <figcaption><b>Figure 5</b> — <b>Récompenses</b> : ce que remportent les lauréats et ce qui est garanti à chaque édition.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="captures/08-contact.png" alt="Page de contact">
+    <figcaption><b>Figure 6</b> — <b>Contact</b> : coordonnées de l'association et horaires, suivis du bandeau des partenaires.</figcaption>
+  </figure>
+</div>
+
+<!-- ============================================== 2. MODULE CANDIDAT ==== -->
+<div class="sheet chapter">
+  <div class="chapter-head">
+    <div class="chapter-num">2</div>
+    <div>
+      <h2>Module Candidat</h2>
+      <p>De la création du compte au certificat de participation</p>
+    </div>
+  </div>
+
+  <h3 class="section">2.1 &nbsp;Créer son compte</h3>
+  <p class="intro">
+    L'inscription est <b>obligatoire</b> et <b>gratuite</b>. Elle précède l'accès à
+    l'entraînement comme au concours de sélection.
+  </p>
+
+  <ol class="steps">
+    <li>Depuis la page d'accueil, cliquez sur <b>S'inscrire au concours</b>.</li>
+    <li>Renseignez la section <b>Identité</b> : nom et prénom, sexe, date de naissance, ville et niveau scolaire.</li>
+    <li>Renseignez la section <b>Contact et accès</b> : numéro de téléphone, adresse e-mail et mot de passe.</li>
+    <li>Cochez la case d'acceptation du règlement, puis validez avec <b>Créer mon compte</b>.</li>
+  </ol>
+
+  <figure>
+    <img src="captures/03-inscription.png" alt="Formulaire d'inscription">
+    <figcaption><b>Figure 7</b> — Le formulaire d'inscription, organisé en deux sections pour rester lisible.</figcaption>
+  </figure>
+
+  <h4>Détail des informations demandées</h4>
+  <table>
+    <thead>
+      <tr><th>Champ</th><th>Précisions</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="key">Nom et prénom</td><td>Tel qu'il figurera sur le certificat de participation.</td></tr>
+      <tr><td class="key">Sexe</td><td>Masculin ou Féminin.</td></tr>
+      <tr><td class="key">Date de naissance</td><td>Une date passée ; le calendrier du téléphone facilite la saisie.</td></tr>
+      <tr><td class="key">Ville</td><td>Djibouti-ville, Tadjourah, Dikhil, Arta ou Ali Sabieh.</td></tr>
+      <tr><td class="key">Niveau scolaire</td><td>Primaire, Collège, Lycée, Université ou Autre. En choisissant « Autre », un champ libre apparaît pour préciser.</td></tr>
+      <tr><td class="key">Téléphone</td><td>Unique : un même numéro ne peut pas servir à deux comptes.</td></tr>
+      <tr><td class="key">Adresse e-mail</td><td>Unique également. Elle sert d'identifiant et reçoit les messages de l'association.</td></tr>
+      <tr><td class="key">Mot de passe</td><td>Huit caractères au minimum, à saisir deux fois à l'identique.</td></tr>
+      <tr><td class="key">Règlement</td><td>La case doit être cochée pour pouvoir valider le formulaire.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note warn">
+    <strong>Un seul compte par candidat</strong>
+    <p>
+      L'adresse e-mail et le numéro de téléphone sont vérifiés : si l'un des deux est
+      déjà utilisé, l'inscription est refusée avec un message explicite. Toute
+      inscription multiple constitue une fraude au sens du règlement.
+    </p>
+  </div>
+
+  <div class="note tip">
+    <strong>Vos saisies ne sont jamais perdues</strong>
+    <p>
+      Si un champ est mal rempli, la page signale précisément les erreurs et
+      conserve tout ce que vous aviez déjà saisi — seuls les mots de passe sont à
+      ressaisir, pour des raisons de sécurité.
+    </p>
+  </div>
+
+  <h3 class="section">2.2 &nbsp;Se connecter</h3>
+  <p>
+    Une fois le compte créé, la connexion se fait avec l'adresse e-mail
+    <b>ou</b> le numéro de téléphone, au choix.
+  </p>
+
+  <ol class="steps">
+    <li>Cliquez sur <b>Se connecter</b> dans le bandeau de navigation.</li>
+    <li>Saisissez votre adresse e-mail ou votre téléphone, puis votre mot de passe.</li>
+    <li>Validez : vous arrivez directement sur votre espace personnel.</li>
+  </ol>
+
+  <figure>
+    <img src="captures/04-connexion.png" alt="Écran de connexion">
+    <figcaption><b>Figure 8</b> — L'écran de connexion. En cas d'erreur, le message reste volontairement générique et n'indique pas si le compte existe.</figcaption>
+  </figure>
+
+  <h3 class="section">2.3 &nbsp;Mon espace : le menu principal</h3>
+  <p>
+    C'est le point de départ après connexion. Deux épreuves y sont proposées, dans
+    deux états bien distincts.
+  </p>
+
+  <figure>
+    <img src="captures/10-espace-candidat.png" alt="Espace candidat">
+    <figcaption><b>Figure 9</b> — L'espace candidat : le concours de sélection verrouillé avec son compte à rebours, l'entraînement disponible, l'encart d'information et le dernier résultat.</figcaption>
+  </figure>
+
+  <div class="cards">
+    <div class="card">
+      <div class="icon">🏆</div>
+      <h5>Concours de sélection</h5>
+      <p>Une seule participation autorisée. Accessible uniquement à l'heure officielle annoncée.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🧠</div>
+      <h5>Entraînement</h5>
+      <p>Accessible à tout moment et rejouable autant de fois que vous le souhaitez.</p>
+    </div>
+  </div>
+
+  <p>La colonne de droite regroupe vos repères personnels :</p>
+  <ul class="bullets">
+    <li><b>Dernier résultat</b> — votre score le plus récent, avec un lien vers le détail ;</li>
+    <li><b>Information</b> — le message publié par l'association pour l'édition en cours ;</li>
+    <li>des raccourcis vers le <b>classement</b> et vos <b>participations</b>.</li>
+  </ul>
+
+  <div class="note gold">
+    <strong>Le compte à rebours du concours de sélection</strong>
+    <p>
+      Tant que l'heure officielle n'est pas atteinte, le bouton reste verrouillé et
+      un compte à rebours s'affiche. Vous n'avez rien à faire : à l'heure dite, la
+      page se met à jour d'elle-même et le bouton devient actif.
+    </p>
+  </div>
+
+  <h3 class="section">2.4 &nbsp;Les consignes avant l'épreuve</h3>
+  <p>
+    Quel que soit le mode choisi, un écran de consignes s'affiche avant le
+    démarrage. <b>Le chronomètre n'est pas encore lancé</b> : prenez le temps de le lire.
+  </p>
+
+  <figure>
+    <img src="captures/11-consignes.png" alt="Écran des consignes">
+    <figcaption><b>Figure 10</b> — Les consignes, précédées des trois repères de l'épreuve : nombre de questions, durée par question et nombre de participations autorisées.</figcaption>
+  </figure>
+
+  <p>
+    Le chronomètre démarre uniquement lorsque vous cliquez sur
+    <b>Commençons — Soyons logiques !</b>
+  </p>
+
+  <h3 class="section">2.5 &nbsp;Répondre aux questions</h3>
+  <p class="intro">
+    L'épreuve comporte 20 questions, présentées <b>une par une</b>. Deux formats
+    peuvent apparaître.
+  </p>
+
+  <h4>Format 1 — Question à choix multiples</h4>
+  <p>Quatre propositions sont affichées, repérées A, B, C et D. Une seule est correcte.</p>
+
+  <figure>
+    <img src="captures/12-question-qcm.png" alt="Question à choix multiples">
+    <figcaption><b>Figure 11</b> — Une question à choix multiples. En haut : le numéro de la question, la barre de progression et le chronomètre circulaire.</figcaption>
+  </figure>
+
+  <p>
+    Touchez une proposition pour la sélectionner : elle s'enfonce et se colore, ce
+    qui rend le choix visible d'un coup d'œil.
+  </p>
+
+  <figure>
+    <img src="captures/13-question-qcm-selection.png" alt="Proposition sélectionnée">
+    <figcaption><b>Figure 12</b> — La proposition C est sélectionnée. Vous pouvez encore changer d'avis tant que le temps n'est pas écoulé.</figcaption>
+  </figure>
+
+  <h4>Format 2 — Question à réponse libre</h4>
+  <p>Aucune proposition n'est affichée : vous saisissez vous-même la réponse.</p>
+
+  <figure>
+    <img src="captures/14-question-libre.png" alt="Question à réponse libre">
+    <figcaption><b>Figure 13</b> — Une question à réponse libre. La casse, les accents et la ponctuation ne sont pas pris en compte lors de la correction.</figcaption>
+  </figure>
+
+  <div class="note tip">
+    <strong>Écrire une réponse libre sans se tromper</strong>
+    <p>
+      « QUINZE », « Quinze » et « quinze » sont acceptés indifféremment, et les
+      formes équivalentes prévues par l'organisation le sont aussi — par exemple
+      <code>15</code> ou <code>quinze</code>. Répondez simplement, sans phrase.
+    </p>
+  </div>
+
+  <h3 class="section">2.6 &nbsp;Les règles du chronomètre</h3>
+  <p>
+    Ces règles sont identiques en entraînement et en sélection. Elles sont
+    appliquées par le serveur : avancer l'horloge de son téléphone ne donne
+    aucun avantage.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Situation</th><th>Ce qui se passe</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="key">Vous répondez à temps</td><td>La réponse est enregistrée. Vous passez à la suite en cliquant sur <b>Valider</b>.</td></tr>
+      <tr><td class="key">Vous changez d'avis</td><td>Autorisé autant de fois que voulu, tant que les 30 secondes ne sont pas écoulées.</td></tr>
+      <tr><td class="key">Le temps s'écoule</td><td>La réponse sélectionnée ou saisie est <b>enregistrée automatiquement</b>, puis la question suivante s'affiche.</td></tr>
+      <tr><td class="key">Vous n'avez rien répondu</td><td>La question est comptée comme <b>non répondue</b>, donc fausse.</td></tr>
+      <tr><td class="key">Vous fermez l'application</td><td>Le chronomètre continue. À votre retour, les questions dont le temps a expiré sont comptées non répondues et vous reprenez à la bonne question.</td></tr>
+      <tr><td class="key">Votre connexion est lente</td><td>Une réponse partie juste avant la fin est acceptée : une petite marge de tolérance réseau est prévue.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note warn">
+    <strong>Le retour en arrière est impossible</strong>
+    <p>
+      Une fois la question suivante affichée, vous ne pouvez plus revenir sur les
+      questions précédentes ni modifier vos réponses. Cette règle vaut pour les deux
+      modes.
+    </p>
+  </div>
+
+  <h3 class="section">2.7 &nbsp;Consulter ses résultats</h3>
+  <p>
+    À la fin de la vingtième question, l'écran des résultats s'affiche
+    automatiquement.
+  </p>
+
+  <figure>
+    <img src="captures/16-resultats.png" alt="Écran des résultats">
+    <figcaption><b>Figure 14</b> — L'écran des résultats : score, appréciation, position au classement et détail des quatre compteurs.</figcaption>
+  </figure>
+
+  <h4>L'appréciation</h4>
+  <p>Le message dépend de votre pourcentage de bonnes réponses :</p>
+
+  <table>
+    <thead>
+      <tr><th>Résultat</th><th>Appréciation affichée</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="key">Plus de 75 %</td>
+        <td><span class="pill green">Excellent !</span> Vous avez un très bon sens de la logique. Continuez à vous entraîner pour le concours.</td>
+      </tr>
+      <tr>
+        <td class="key">De 50 à 74 %</td>
+        <td><span class="pill gold">Bon résultat !</span> Continuez à vous entraîner afin d'améliorer votre score.</td>
+      </tr>
+      <tr>
+        <td class="key">Moins de 50 %</td>
+        <td><span class="pill grey">Continuez vos efforts.</span> Chaque entraînement vous permettra de progresser.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Quatre compteurs complètent le score :</p>
+  <div class="kpi-row">
+    <div class="kpi"><div class="v">16</div><div class="l">Bonnes réponses</div></div>
+    <div class="kpi"><div class="v">4</div><div class="l">Fausses réponses</div></div>
+    <div class="kpi"><div class="v">0</div><div class="l">Non répondues</div></div>
+    <div class="kpi"><div class="v">6:21</div><div class="l">Temps total</div></div>
+  </div>
+
+  <h3 class="section">2.8 &nbsp;Le tableau récapitulatif</h3>
+  <p>
+    Depuis les résultats, le bouton <b>Tableau récapitulatif</b> ouvre le détail
+    question par question — l'outil le plus utile pour progresser.
+  </p>
+
+  <figure>
+    <img src="captures/17-recapitulatif.png" alt="Tableau récapitulatif">
+    <figcaption><b>Figure 15</b> — Pour chaque question : votre réponse, la bonne réponse, le verdict et votre temps de réponse. La dernière ligne totalise l'ensemble.</figcaption>
+  </figure>
+
+  <div class="note">
+    <strong>Sur téléphone, le tableau devient une liste</strong>
+    <p>
+      Un tableau à cinq colonnes serait illisible sur un petit écran : l'application
+      le remplace automatiquement par une carte par question, avec les mêmes
+      informations.
+    </p>
+  </div>
+
+  <h3 class="section">2.9 &nbsp;Le classement</h3>
+  <p>
+    Le classement est calculé automatiquement, sans intervention de
+    l'organisation.
+  </p>
+
+  <figure>
+    <img src="captures/19-classement.png" alt="Classement">
+    <figcaption><b>Figure 16</b> — Votre position est rappelée en haut, puis mise en évidence dans la liste. Les autres candidats apparaissent sous une forme abrégée.</figcaption>
+  </figure>
+
+  <ul class="bullets">
+    <li><b>Premier critère</b> — le nombre de bonnes réponses, du plus élevé au plus faible ;</li>
+    <li><b>Second critère</b> — en cas d'égalité, le temps total de réponse le plus faible l'emporte ;</li>
+    <li>en entraînement, seule votre <b>meilleure</b> tentative est classée.</li>
+  </ul>
+
+  <h3 class="section">2.10 &nbsp;Mes participations et mes messages</h3>
+  <p>
+    <b>Mes participations</b> conserve l'historique de toutes vos épreuves et permet
+    de reprendre une épreuve interrompue.
+  </p>
+
+  <figure>
+    <img src="captures/15-historique.png" alt="Mes participations">
+    <figcaption><b>Figure 17</b> — L'historique des participations, avec le score, le temps et une barre de progression par épreuve.</figcaption>
+  </figure>
+
+  <p>
+    <b>Mes messages</b> rassemble les communications de l'association : rappels de
+    date, résultats officiels, communiqués. La pastille rouge du bandeau indique le
+    nombre de messages non lus.
+  </p>
+
+  <figure>
+    <img src="captures/20-messages.png" alt="Messages">
+    <figcaption><b>Figure 18</b> — La messagerie interne. Les messages non lus sont surlignés ; ils sont marqués comme lus à l'ouverture de la page.</figcaption>
+  </figure>
+
+  <h3 class="section">2.11 &nbsp;Le certificat de participation</h3>
+  <p>
+    À l'issue du concours de sélection, un certificat nominatif est mis à
+    disposition depuis l'écran des résultats. Le bouton <b>Imprimer / Enregistrer en
+    PDF</b> ouvre la boîte d'impression du navigateur ; les éléments de navigation
+    sont automatiquement retirés de la version imprimée.
+  </p>
+
+  <figure>
+    <img src="captures/18-certificat.png" alt="Certificat de participation">
+    <figcaption><b>Figure 19</b> — Le certificat reprend le nom du candidat, l'édition, le score, le temps total, le classement et une référence unique.</figcaption>
+  </figure>
+
+  <h3 class="section">2.12 &nbsp;Utiliser l'application sur téléphone</h3>
+  <p>
+    L'application s'adapte à toutes les tailles d'écran. Sur téléphone, la
+    navigation se replie derrière le bouton ☰ et les contenus s'empilent sur une
+    seule colonne.
+  </p>
+
+  <div class="phone-row">
+    <figure>
+      <img src="captures/30-mobile-espace.png" alt="Espace candidat sur téléphone">
+      <figcaption><b>Figure 20</b> — Mon espace</figcaption>
+    </figure>
+    <figure>
+      <img src="captures/31-mobile-question.png" alt="Question sur téléphone">
+      <figcaption><b>Figure 21</b> — Une question</figcaption>
+    </figure>
+    <figure>
+      <img src="captures/32-mobile-menu.png" alt="Menu déplié sur téléphone">
+      <figcaption><b>Figure 22</b> — Le menu déplié</figcaption>
+    </figure>
+  </div>
+
+  <div class="note tip">
+    <strong>Conseil avant le jour J</strong>
+    <p>
+      Faites au moins un entraînement complet sur l'appareil que vous utiliserez le
+      jour du concours. Vous vérifierez ainsi votre connexion et vous serez habitué
+      au rythme des 30 secondes.
+    </p>
+  </div>
+</div>
+
+<!-- ======================================= 3. MODULE ADMINISTRATION ==== -->
+<div class="sheet chapter admin-scope">
+  <div class="chapter-head admin">
+    <div class="chapter-num">3</div>
+    <div>
+      <h2>Module Administration</h2>
+      <p>Piloter les concours, les questions, les candidats et les contenus</p>
+    </div>
+  </div>
+
+  <h3 class="section">3.1 &nbsp;Accéder à l'administration</h3>
+  <p>
+    Connectez-vous avec un compte administrateur : un bouton <b>Administration</b>
+    apparaît alors dans le bandeau et sur votre espace. L'accès est refusé à tout
+    autre compte.
+  </p>
+
+  <h3 class="section">3.2 &nbsp;Le tableau de bord</h3>
+  <p class="intro">
+    Le tableau de bord donne en un écran l'état de l'édition en cours. Le menu
+    latéral, présent sur toutes les pages d'administration, regroupe les sections
+    par thème : Pilotage, Concours et Contenus.
+  </p>
+
+  <figure>
+    <img src="captures/40-admin-tableau-de-bord.png" alt="Tableau de bord de l'administration">
+    <figcaption><b>Figure 23</b> — Le tableau de bord : indicateurs clés, répartitions des inscrits, concours programmés et dernières inscriptions.</figcaption>
+  </figure>
+
+  <h4>Les quatre indicateurs</h4>
+  <table>
+    <thead>
+      <tr><th>Indicateur</th><th>Signification</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="key">Candidats inscrits</td><td>Nombre total de comptes candidats, comptes administrateurs exclus.</td></tr>
+      <tr><td class="key">Participations terminées</td><td>Épreuves menées jusqu'à la dernière question, tous concours confondus.</td></tr>
+      <tr><td class="key">Taux de réussite</td><td>Part des participations terminées ayant obtenu au moins 50 % de bonnes réponses.</td></tr>
+      <tr><td class="key">Temps moyen</td><td>Durée moyenne d'une épreuve terminée.</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    Trois répartitions complètent ces chiffres : par <b>niveau scolaire</b>, par
+    <b>genre</b> et par <b>ville</b>, chacune en nombre et en pourcentage.
+  </p>
+
+  <h3 class="section">3.3 &nbsp;Gérer les candidats</h3>
+  <p>
+    La section <b>Candidats</b> liste tous les inscrits, avec recherche, filtres et
+    export.
+  </p>
+
+  <figure>
+    <img src="captures/41-admin-candidats.png" alt="Liste des candidats">
+    <figcaption><b>Figure 24</b> — La liste des candidats : barre de recherche, filtres par niveau et par ville, et une ligne par inscrit.</figcaption>
+  </figure>
+
+  <ol class="steps">
+    <li>Saisissez un <b>nom, un e-mail ou un téléphone</b> dans le champ de recherche.</li>
+    <li>Affinez si besoin avec les listes <b>Niveau scolaire</b> et <b>Ville</b>.</li>
+    <li>Cliquez sur <b>Filtrer</b>. Les critères sont conservés dans l'adresse de la page : elle peut être partagée ou mise en favori.</li>
+    <li><b>Réinitialiser</b> revient à la liste complète.</li>
+  </ol>
+
+  <p>
+    Le meilleur score de chaque candidat est cliquable : il ouvre le détail complet
+    de sa participation, question par question. Le bouton <b>Exporter en Excel</b>
+    produit un classeur de la liste des inscrits.
+  </p>
+
+  <h3 class="section">3.4 &nbsp;Gérer les concours</h3>
+  <p>
+    Un « concours » désigne une épreuve : un entraînement ou une sélection, pour une
+    édition donnée. Plusieurs éditions peuvent coexister.
+  </p>
+
+  <figure>
+    <img src="captures/42-admin-concours.png" alt="Liste des concours">
+    <figcaption><b>Figure 25</b> — La liste des concours, avec pour chacun son état, le nombre de questions et de participations.</figcaption>
+  </figure>
+
+  <p>L'étiquette d'état résume la situation du concours :</p>
+  <table>
+    <thead><tr><th>Étiquette</th><th>Signification</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pill green">Ouvert</span></td><td>Les candidats peuvent passer l'épreuve immédiatement.</td></tr>
+      <tr><td><span class="pill gold">Programmé</span></td><td>L'heure officielle n'est pas encore atteinte ; le compte à rebours tourne.</td></tr>
+      <tr><td><span class="pill red">Sans question</span></td><td>Aucune question n'a encore été saisie : l'épreuve ne peut pas démarrer.</td></tr>
+      <tr><td><span class="pill grey">Clôturé / Fermé</span></td><td>La date de clôture est passée, ou le concours a été désactivé.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="section">3.5 &nbsp;Gérer la banque de questions</h3>
+  <p>
+    Ouvrez un concours pour accéder à ses questions. Elles sont numérotées et
+    présentées dans l'ordre où les candidats les verront.
+  </p>
+
+  <figure>
+    <img src="captures/43-admin-questions.png" alt="Banque de questions">
+    <figcaption><b>Figure 26</b> — La banque de questions. Les flèches ↑ et ↓ réordonnent, les liens permettent de modifier ou de supprimer.</figcaption>
+  </figure>
+
+  <p>Le formulaire d'une question s'adapte au type choisi :</p>
+
+  <figure>
+    <img src="captures/45-admin-question-form.png" alt="Formulaire de question">
+    <figcaption><b>Figure 27</b> — Formulaire d'une question à choix multiples : énoncé, quatre propositions obligatoires, désignation de la bonne réponse, points et note interne.</figcaption>
+  </figure>
+
+  <table>
+    <thead><tr><th>Champ</th><th>Précisions</th></tr></thead>
+    <tbody>
+      <tr><td class="key">Énoncé</td><td>Le texte lu par le candidat.</td></tr>
+      <tr><td class="key">Type</td><td><b>QCM</b> : quatre propositions, une seule correcte. <b>Réponse libre</b> : le candidat saisit sa réponse.</td></tr>
+      <tr><td class="key">Propositions A à D</td><td>Obligatoires pour un QCM ; ignorées pour une réponse libre.</td></tr>
+      <tr><td class="key">Bonne réponse</td><td>Une lettre (A–D) pour un QCM. Pour une réponse libre, les formulations acceptées séparées par <code>|</code>.</td></tr>
+      <tr><td class="key">Points</td><td>1 par défaut. Permet de pondérer une question plus difficile.</td></tr>
+      <tr><td class="key">Explication</td><td>Note interne, jamais montrée au candidat.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note tip">
+    <strong>Réponses libres : prévoyez les variantes</strong>
+    <p>
+      Saisir <code>15 | quinze</code> accepte les deux écritures. La casse, les
+      accents et la ponctuation sont déjà ignorés automatiquement ; seule la première
+      formulation est montrée au candidat dans son récapitulatif.
+    </p>
+  </div>
+
+  <div class="note">
+    <strong>Le nombre de questions se met à jour tout seul</strong>
+    <p>
+      Le nombre annoncé aux candidats suit toujours le contenu réel de la banque de
+      questions : il n'y a rien à ressaisir après un ajout ou une suppression.
+    </p>
+  </div>
+
+  <h3 class="section">3.6 &nbsp;Programmer une épreuve</h3>
+  <p>
+    Sous la banque de questions, la section <b>Paramètres</b> réunit tous les
+    réglages du concours.
+  </p>
+
+  <figure>
+    <img src="captures/44-admin-parametres.png" alt="Paramètres d'un concours">
+    <figcaption><b>Figure 28</b> — Les paramètres : titre, identifiant d'URL, mode, consignes, encart d'information, durée, édition et dates.</figcaption>
+  </figure>
+
+  <table>
+    <thead><tr><th>Réglage</th><th>Effet</th></tr></thead>
+    <tbody>
+      <tr><td class="key">Mode</td><td><b>Entraînement</b> : rejouable sans limite. <b>Sélection</b> : une seule participation par candidat.</td></tr>
+      <tr><td class="key">Consignes</td><td>Une règle par ligne ; elles s'affichent numérotées avant l'épreuve.</td></tr>
+      <tr><td class="key">Encart Information</td><td>Message affiché sur l'espace candidat.</td></tr>
+      <tr><td class="key">Secondes par question</td><td>30 par défaut, conformément au règlement.</td></tr>
+      <tr><td class="key">Édition</td><td>L'année du concours : permet de faire coexister plusieurs éditions.</td></tr>
+      <tr><td class="key">Heure officielle</td><td>Verrouille l'épreuve jusqu'à cette date et affiche le compte à rebours aux candidats.</td></tr>
+      <tr><td class="key">Ouverture / Clôture</td><td>Bornent la période d'accès à l'épreuve.</td></tr>
+      <tr><td class="key">Concours ouvert</td><td>Interrupteur général : décoché, le concours disparaît de l'espace candidat.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note gold">
+    <strong>Programmer le jour J</strong>
+    <p>
+      Renseignez l'<b>heure officielle de l'épreuve</b> et laissez le concours ouvert.
+      Les candidats verront le compte à rebours ; à la seconde prévue, leur écran
+      s'actualise et le bouton devient actif, sans aucune manipulation de votre part.
+    </p>
+  </div>
+
+  <div class="note warn">
+    <strong>La suppression d'un concours est définitive</strong>
+    <p>
+      Elle emporte ses questions <b>et</b> toutes les participations enregistrées.
+      Pour éviter tout accident, l'application demande de ressaisir l'identifiant du
+      concours avant de confirmer. Pour simplement fermer l'accès, décochez plutôt
+      « Concours ouvert aux candidats ».
+    </p>
+  </div>
+
+  <h3 class="section">3.7 &nbsp;Importer des questions depuis Excel</h3>
+  <p>
+    Saisir vingt questions une par une est fastidieux : l'import Excel permet de
+    charger toute une série en une fois.
+  </p>
+
+  <figure>
+    <img src="captures/46-admin-import.png" alt="Import de questions">
+    <figcaption><b>Figure 29</b> — L'écran d'import, avec le rappel du format attendu et le lien de téléchargement du modèle.</figcaption>
+  </figure>
+
+  <ol class="steps">
+    <li>Cliquez sur <b>Télécharger le modèle</b> : vous obtenez un classeur pré-rempli de deux exemples.</li>
+    <li>Complétez-le avec vos questions, une par ligne, sans modifier la ligne d'en-tête.</li>
+    <li>Revenez sur cet écran et sélectionnez votre fichier.</li>
+    <li>Cochez éventuellement <b>Remplacer les questions existantes</b> ; sinon les questions sont ajoutées à la suite.</li>
+    <li>Lancez l'import.</li>
+  </ol>
+
+  <h4>Colonnes attendues</h4>
+  <table>
+    <thead><tr><th>N°</th><th>Colonne</th><th>Contenu</th></tr></thead>
+    <tbody>
+      <tr><td class="key">1</td><td>Type</td><td><code>QCM</code> ou <code>LIBRE</code></td></tr>
+      <tr><td class="key">2</td><td>Énoncé</td><td>Le texte de la question</td></tr>
+      <tr><td class="key">3 à 6</td><td>Réponses A à D</td><td>Obligatoires pour un QCM, à laisser vides sinon</td></tr>
+      <tr><td class="key">7</td><td>Bonne réponse</td><td>La lettre A–D, ou les formulations acceptées séparées par <code>|</code></td></tr>
+      <tr><td class="key">8</td><td>Points</td><td>1 si la case est vide</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note warn">
+    <strong>Import tout ou rien</strong>
+    <p>
+      Si une seule ligne est invalide, <b>rien n'est enregistré</b> : l'application
+      liste les lignes fautives avec leur numéro et le motif. Corrigez le fichier,
+      puis relancez l'import. Un import à moitié appliqué serait bien plus pénible à
+      rattraper.
+    </p>
+  </div>
+
+  <h3 class="section">3.8 &nbsp;Participations, classement et export</h3>
+  <p>
+    Pour chaque concours, l'écran <b>Participations</b> présente le classement
+    officiel, déjà trié.
+  </p>
+
+  <figure>
+    <img src="captures/47-admin-participations.png" alt="Participations et classement">
+    <figcaption><b>Figure 30</b> — Le classement d'un concours : rang, identité complète du candidat, niveau, ville, score, non-réponses et temps total.</figcaption>
+  </figure>
+
+  <p>
+    Les épreuves encore en cours sont listées séparément, sous le classement, avec
+    la question atteinte par chaque candidat.
+  </p>
+
+  <h4>L'export Excel</h4>
+  <p>
+    Le bouton <b>Exporter en Excel</b> produit un classeur trié du meilleur au moins
+    bon, contenant les colonnes exigées par le cahier des charges :
+  </p>
+
+  <ul class="bullets">
+    <li>Classement général, nom et prénom, sexe, date de naissance ;</li>
+    <li>niveau scolaire, ville, téléphone, adresse e-mail ;</li>
+    <li>nombre de bonnes réponses, score sur 20, fausses réponses, non-réponses ;</li>
+    <li>temps total de réponse, au format horaire exploitable par Excel.</li>
+  </ul>
+
+  <div class="note tip">
+    <strong>Un fichier prêt à l'emploi</strong>
+    <p>
+      L'en-tête est figé et filtrable, les dates et les durées sont de vrais formats
+      Excel : vous pouvez trier, filtrer et calculer des moyennes sans retraitement.
+    </p>
+  </div>
+
+  <h3 class="section">3.9 &nbsp;Publier des actualités</h3>
+  <p>
+    Les actualités alimentent l'onglet public et remontent automatiquement sur la
+    page d'accueil.
+  </p>
+
+  <figure>
+    <img src="captures/50-admin-actualites.png" alt="Liste des actualités">
+    <figcaption><b>Figure 31</b> — La liste des actualités, avec l'état de publication et l'épinglage de chacune.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="captures/51-admin-actualite-form.png" alt="Formulaire d'actualité">
+    <figcaption><b>Figure 32</b> — Le formulaire de publication : titre, contenu, image, vidéo, publication et épinglage.</figcaption>
+  </figure>
+
+  <ul class="bullets">
+    <li><b>Publier</b> — décoché, l'annonce reste un brouillon invisible du public ;</li>
+    <li><b>Épingler à la une</b> — l'annonce reste en tête du fil, quelle que soit sa date ;</li>
+    <li><b>Image</b> et <b>Vidéo</b> — adresses facultatives, pour illustrer une affiche ou un reportage.</li>
+  </ul>
+
+  <div class="note">
+    <strong>La date de publication ne bouge pas</strong>
+    <p>
+      Corriger une annonce déjà publiée ne la fait pas remonter en tête du fil : sa
+      date de première publication est conservée.
+    </p>
+  </div>
+
+  <h3 class="section">3.10 &nbsp;Modifier les pages du site</h3>
+  <p>
+    Trois pages publiques sont directement éditables : le <b>règlement</b>, le
+    <b>contact</b> et les <b>récompenses</b>.
+  </p>
+
+  <figure>
+    <img src="captures/52-admin-pages.png" alt="Édition des pages">
+    <figcaption><b>Figure 33</b> — L'éditeur de pages. Le lien « Voir la page publique » permet de vérifier le rendu immédiatement.</figcaption>
+  </figure>
+
+  <div class="note">
+    <strong>Mise en forme du texte</strong>
+    <p>
+      Une ligne vide sépare deux paragraphes ; une ligne commençant par un tiret
+      devient une puce. Aucun code n'est nécessaire.
+    </p>
+  </div>
+
+  <h3 class="section">3.11 &nbsp;Gérer les partenaires</h3>
+  <p>
+    Les partenaires institutionnels, académiques et financiers s'affichent en bas de
+    la page d'accueil et sur la page de contact.
+  </p>
+
+  <figure>
+    <img src="captures/53-admin-partenaires.png" alt="Gestion des partenaires">
+    <figcaption><b>Figure 34</b> — La gestion des partenaires : liste ordonnée à gauche, formulaire d'ajout à droite.</figcaption>
+  </figure>
+
+  <p>
+    Le champ <b>Ordre d'affichage</b> commande la position dans le bandeau. Sans
+    logo, c'est le nom du partenaire qui est affiché.
+  </p>
+
+  <h3 class="section">3.12 &nbsp;Envoyer un message aux candidats</h3>
+  <p>
+    Cette section diffuse un message privé dans l'application de chaque
+    destinataire — l'outil idéal pour un rappel avant l'épreuve.
+  </p>
+
+  <figure>
+    <img src="captures/54-admin-messages.png" alt="Envoi de messages">
+    <figcaption><b>Figure 35</b> — La diffusion de messages, avec le choix du public et l'historique des envois récents.</figcaption>
+  </figure>
+
+  <table>
+    <thead><tr><th>Public</th><th>Destinataires</th></tr></thead>
+    <tbody>
+      <tr><td class="key">Tous les candidats</td><td>L'ensemble des comptes inscrits.</td></tr>
+      <tr><td class="key">N'ont pas encore participé</td><td>Ceux qui n'ont pas terminé le concours choisi — idéal pour une relance.</td></tr>
+      <tr><td class="key">Ont terminé</td><td>Ceux qui ont achevé le concours choisi — idéal pour annoncer les résultats.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <strong>Message dans l'application, et courriel si configuré</strong>
+    <p>
+      Le message est toujours déposé dans l'application. Un courriel identique est
+      envoyé en parallèle lorsqu'un service d'envoi a été configuré par l'équipe
+      technique ; dans le cas contraire, seul le message interne est délivré.
+    </p>
+  </div>
+</div>
+
+<!-- ======================================================= ANNEXES ==== -->
+<div class="sheet chapter">
+  <div class="chapter-head annex">
+    <div class="chapter-num">A</div>
+    <div>
+      <h2>Annexes</h2>
+      <p>Règles de correction, classement et dépannage</p>
+    </div>
+  </div>
+
+  <h3 class="section">A &nbsp;Règles de correction et de classement</h3>
+
+  <h4>Correction d'une réponse</h4>
+  <ul class="bullets">
+    <li><b>QCM</b> — la lettre choisie doit correspondre à la bonne réponse. Une seule proposition est correcte.</li>
+    <li><b>Réponse libre</b> — la comparaison ignore la casse, les accents, la ponctuation et les espaces superflus. Toutes les formulations prévues par l'organisation sont acceptées.</li>
+    <li><b>Absence de réponse</b> — comptée comme une mauvaise réponse, conformément au règlement.</li>
+  </ul>
+
+  <h4>Ordre du classement</h4>
+  <ol class="steps">
+    <li>Nombre de bonnes réponses, par ordre décroissant.</li>
+    <li>À égalité, temps total de réponse le plus faible.</li>
+    <li>À égalité stricte sur les deux critères, les candidats partagent le même rang et le rang suivant est décalé d'autant.</li>
+  </ol>
+
+  <h3 class="section">B &nbsp;Questions fréquentes et dépannage</h3>
+
+  <table>
+    <thead><tr><th>Situation</th><th>Que faire</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="key">« Un compte existe déjà avec cette adresse »</td>
+        <td>Le compte a déjà été créé. Utilisez la page de connexion plutôt que celle d'inscription.</td>
+      </tr>
+      <tr>
+        <td class="key">Le bouton du concours reste verrouillé</td>
+        <td>L'heure officielle n'est pas encore atteinte. Le compte à rebours indique le temps restant ; le bouton s'activera seul.</td>
+      </tr>
+      <tr>
+        <td class="key">« Vous avez déjà passé le concours de sélection »</td>
+        <td>Une seule participation est autorisée. L'entraînement, lui, reste accessible sans limite.</td>
+      </tr>
+      <tr>
+        <td class="key">L'application s'est fermée pendant l'épreuve</td>
+        <td>Reconnectez-vous et reprenez depuis <b>Mes participations</b>. Les questions dont le temps a expiré entre-temps sont comptées non répondues.</td>
+      </tr>
+      <tr>
+        <td class="key">Le concours n'apparaît pas chez les candidats</td>
+        <td>Vérifiez, dans les paramètres, que « Concours ouvert aux candidats » est coché, que la banque de questions n'est pas vide et que la date de clôture n'est pas dépassée.</td>
+      </tr>
+      <tr>
+        <td class="key">L'import Excel est refusé</td>
+        <td>Le rapport indique le numéro de chaque ligne fautive et le motif. Repartez du modèle fourni, sans modifier l'ordre des colonnes.</td>
+      </tr>
+      <tr>
+        <td class="key">Le classement paraît vide</td>
+        <td>Seules les participations <b>terminées</b> sont classées. Les épreuves en cours apparaissent sous le classement.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note tip">
+    <strong>Besoin d'aide&nbsp;?</strong>
+    <p>
+      Les coordonnées de l'association figurent sur la page <b>Contact</b> de
+      l'application. Précisez votre nom complet et l'adresse e-mail utilisée à
+      l'inscription pour accélérer le traitement de votre demande.
+    </p>
+  </div>
+</div>
+
+</body>
+</html>

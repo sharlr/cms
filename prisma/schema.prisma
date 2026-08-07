@@ -1,0 +1,234 @@
+// Contest Management Software — data model
+// Domain: "Concours National de Logique" (Women in STEM)
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ---------------------------------------------------------------- utilisateurs
+
+enum Role {
+  CANDIDATE
+  ADMIN
+}
+
+enum Gender {
+  MASCULIN
+  FEMININ
+}
+
+enum EducationLevel {
+  PRIMAIRE
+  COLLEGE
+  LYCEE
+  UNIVERSITE
+  AUTRE
+}
+
+/// Régions de Djibouti proposées à l'inscription.
+enum City {
+  DJIBOUTI_VILLE
+  TADJOURAH
+  DIKHIL
+  ARTA
+  ALI_SABIEH
+}
+
+model User {
+  id             String         @id @default(cuid())
+  fullName       String
+  gender         Gender
+  birthDate      DateTime
+  city           City
+  educationLevel EducationLevel
+  otherLevel     String? // rempli quand educationLevel = AUTRE
+  phone          String         @unique
+  email          String         @unique
+  passwordHash   String
+  acceptedTerms  Boolean        @default(false)
+  role           Role           @default(CANDIDATE)
+  createdAt      DateTime       @default(now())
+
+  attempts      Attempt[]
+  notifications Notification[]
+}
+
+// -------------------------------------------------------------------- concours
+
+enum ContestMode {
+  ENTRAINEMENT // rejouable à volonté
+  SELECTION // une seule tentative comptabilisée
+}
+
+model Contest {
+  id                 String      @id @default(cuid())
+  slug               String      @unique
+  title              String
+  mode               ContestMode
+  information        String? // encart "Information :" de l'écran d'accueil
+  instructions       String // écran "Consignes"
+  questionCount      Int         @default(20)
+  secondsPerQuestion Int         @default(30)
+  isActive           Boolean     @default(true)
+
+  /// Édition (année) du concours. Permet de programmer plusieurs éditions et de
+  /// basculer les éditions passées en entrainement.
+  edition Int @default(2026)
+
+  /// Heure officielle d'ouverture de l'épreuve. Tant qu'elle n'est pas atteinte,
+  /// le bouton du concours de sélection reste verrouillé et affiche un compte à
+  /// rebours ; il s'active automatiquement à l'heure dite.
+  startsAt  DateTime?
+  opensAt   DateTime?
+  closesAt  DateTime?
+  createdAt DateTime  @default(now())
+
+  questions Question[]
+  attempts  Attempt[]
+
+  @@index([mode, isActive])
+}
+
+enum QuestionType {
+  QCM // 4 propositions, une seule correcte
+  LIBRE // réponse à saisir
+}
+
+model Question {
+  id            String       @id @default(cuid())
+  contestId     String
+  position      Int
+  type          QuestionType
+  body          String
+  imageUrl      String?
+  correctAnswer String // "A".."D" pour un QCM, texte attendu pour une réponse libre
+  explanation   String?
+  points        Int          @default(1)
+
+  contest Contest  @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  choices Choice[]
+  answers Answer[]
+
+  @@unique([contestId, position])
+}
+
+model Choice {
+  id         String @id @default(cuid())
+  questionId String
+  label      String // "A" | "B" | "C" | "D"
+  text       String
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId, label])
+}
+
+// ------------------------------------------------------------------ tentatives
+
+enum AttemptStatus {
+  EN_COURS
+  TERMINEE
+  ABANDONNEE
+}
+
+model Attempt {
+  id        String        @id @default(cuid())
+  userId    String
+  contestId String
+  status    AttemptStatus @default(EN_COURS)
+  startedAt DateTime      @default(now())
+
+  // position (1-based) de la question affichée, et l'instant où elle a été servie —
+  // le chrono de 30 s fait autorité côté serveur.
+  currentPosition   Int       @default(1)
+  questionServedAt  DateTime?
+  finishedAt        DateTime?
+
+  correctCount    Int @default(0)
+  wrongCount      Int @default(0)
+  unansweredCount Int @default(0)
+  score           Int @default(0)
+  totalTimeMs     Int @default(0)
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contest Contest @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  answers Answer[]
+
+  @@index([userId, contestId])
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  attemptId  String
+  questionId String
+  position   Int
+  given      String? // null = non répondue
+  isCorrect  Boolean  @default(false)
+  timeMs     Int      @default(0)
+  answeredAt DateTime @default(now())
+
+  attempt  Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([attemptId, questionId])
+}
+
+// ------------------------------------------------------- contenus éditoriaux
+
+/// Publication de l'onglet « Actualités » : annonces, dates, résultats officiels,
+/// communiqués. Les publications épinglées remontent en tête de l'accueil.
+model News {
+  id          String    @id @default(cuid())
+  title       String
+  body        String
+  imageUrl    String?
+  videoUrl    String?
+  isPinned    Boolean   @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([publishedAt])
+}
+
+/// Pages de contenu éditées par l'administration : règlement, contact,
+/// récompenses. Le `slug` sert de clé stable côté application.
+model SitePage {
+  slug      String   @id
+  title     String
+  body      String
+  updatedAt DateTime @updatedAt
+}
+
+/// Partenaires institutionnels, académiques et financiers affichés sur l'accueil.
+model Partner {
+  id       String  @id @default(cuid())
+  name     String
+  logoUrl  String?
+  websiteUrl String?
+  position Int     @default(0)
+
+  @@index([position])
+}
+
+/// Message privé adressé à un candidat dans l'application (rappel de la date du
+/// concours, résultats officiels…). `emailedAt` trace l'envoi du courriel jumeau.
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  title     String
+  body      String
+  linkUrl   String?
+  readAt    DateTime?
+  emailedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+}
