@@ -1,0 +1,56 @@
+{
+  "common": {
+    "hello": "مرحبا",
+    "welcome": "أهلا وسهلا",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجاح"
+  },
+  "nav": {
+    "ranking": "عرض الترتيب",
+    "participations": "مشاركاتي",
+    "news": "الأخبار",
+    "logout": "تسجيل الخروج"
+  },
+  "home": {
+    "greeting": "مرحبا {name} 👋",
+    "chooseContest": "اختر مسابقة لبدء البدء.",
+    "training": "التدريب",
+    "lastResult": "آخر نتيجة",
+    "seeDetails": "عرض التفاصيل ←",
+    "viewAll": "عرض الكل ←",
+    "information": "معلومات",
+    "informationPlaceholder": "سيتم نشر معلومات حول المسابقة هنا.",
+    "seeRanking": "عرض الترتيب",
+    "myParticipations": "مشاركاتي"
+  },
+  "contest": {
+    "edition": "الإصدار {edition}",
+    "locked": "🔒 مقفل",
+    "open": "● مفتوح",
+    "questions": "{count} أسئلة",
+    "secondsPerQuestion": "{seconds} ثانية لكل سؤال",
+    "singleParticipation": "مشاركة واحدة فقط",
+    "openingDate": "الفتح في {date}",
+    "startContest": "بدء المسابقة",
+    "train": "التدريب",
+    "buttonActivates": "سيتم تفعيل الزر تلقائياً في الوقت المحدد.",
+    "contestClosed": "تم إغلاق المسابقة.",
+    "noQuestions": "لم يتم نشر الأسئلة بعد.",
+    "notOpened": "لم تفتح المسابقة بعد.",
+    "noPublishedQuestions": "لا توجد أسئلة منشورة.",
+    "unavailable": "غير متاح حالياً."
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "forgotPassword": "هل نسيت كلمة المرور؟",
+    "noAccount": "ليس لديك حساب؟",
+    "createAccount": "إنشاء حساب"
+  },
+  "tagline": "انظر بعناية… المنطق في كل مكان!",
+  "slogan": "لنكن منطقيين!",
+  "pitch": "شارك في مسابقة المنطق الوطنية وحاول الفوز بالعديد من الجوائز!"
+}
