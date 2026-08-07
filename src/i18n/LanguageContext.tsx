@@ -19,9 +19,15 @@ interface LanguageContextType {
   isRTL: boolean;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(
-  undefined
-);
+const defaultContextValue: LanguageContextType = {
+  language: DEFAULT_LANGUAGE,
+  setLanguage: () => {},
+  t: (key: string) => key,
+  translations: loadTranslation(DEFAULT_LANGUAGE),
+  isRTL: false,
+};
+
+const LanguageContext = createContext<LanguageContextType>(defaultContextValue);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(DEFAULT_LANGUAGE);
@@ -61,14 +67,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const translations = loadTranslation(language);
   const isRTL = RTL_LANGUAGES.includes(language);
 
-  if (!mounted) {
-    return <>{children}</>;
-  }
+  const value: LanguageContextType = {
+    language,
+    setLanguage,
+    t,
+    translations,
+    isRTL,
+  };
 
   return (
-    <LanguageContext.Provider
-      value={{ language, setLanguage, t, translations, isRTL }}
-    >
+    <LanguageContext.Provider value={value}>
       {children}
     </LanguageContext.Provider>
   );
@@ -76,8 +84,5 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
 export function useLanguage() {
   const context = useContext(LanguageContext);
-  if (!context) {
-    throw new Error("useLanguage must be used within a LanguageProvider");
-  }
   return context;
 }
