@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { SLOGAN, TAGLINE } from "@/lib/labels";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useLanguage } from "@/i18n";
 
 /**
  * Gabarit des écrans d'inscription et de connexion : formulaire à gauche,
@@ -19,15 +23,20 @@ export function AuthLayout({
   aside?: React.ReactNode;
   children: React.ReactNode;
 }) {
+  const { t } = useLanguage();
+
   return (
     <div className="grid min-h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]">
       <div className="flex flex-col px-5 py-8 sm:px-10 sm:py-12">
-        <Link href="/" className="mb-8 inline-flex w-fit items-center gap-2.5">
-          <Logo className="h-10 w-10" />
-          <span className="font-display text-base font-extrabold text-ink">
-            Concours National de Logique
-          </span>
-        </Link>
+        <div className="mb-8 flex items-center justify-between">
+          <Link href="/" className="inline-flex items-center gap-2.5">
+            <Logo className="h-10 w-10" />
+            <span className="font-display text-base font-extrabold text-ink">
+              {t("common.appName") || "Concours National de Logique"}
+            </span>
+          </Link>
+          <LanguageSwitcher />
+        </div>
 
         <div className="mx-auto w-full max-w-lg flex-1">
           <h1 className="text-3xl font-extrabold text-ink sm:text-4xl">{title}</h1>

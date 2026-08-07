@@ -1,5 +1,6 @@
 {
   "common": {
+    "appName": "Concours National de Logique",
     "hello": "Bonjour",
     "welcome": "Bienvenue",
     "loading": "Chargement...",

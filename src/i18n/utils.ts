@@ -6,6 +6,7 @@ import arTranslations from "./translations/ar.json";
 
 type TranslationKeys = {
   common: {
+    appName: string;
     hello: string;
     welcome: string;
     loading: string;

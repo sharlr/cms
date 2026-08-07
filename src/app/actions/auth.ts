@@ -1,7 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { z } from "zod";
+import { SignJWT } from "jose";
 import { prisma } from "@/lib/prisma";
 import { createSession, destroySession, hashPassword, verifyPassword } from "@/lib/auth";
 
@@ -169,6 +171,80 @@ export async function loginAction(
 
   await createSession(user.id);
   redirect("/accueil");
+}
+
+const superAdminSchema = z.object({
+  username: z.string().min(1, "Enter your username."),
+  password: z.string().min(1, "Enter your password."),
+});
+
+export async function superAdminLoginAction(
+  _prev: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  const parsed = superAdminSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) {
+    return { error: "Enter your username and password." };
+  }
+
+  const { username, password } = parsed.data;
+  const loginEcho = { values: { username }, submissionId: crypto.randomUUID() };
+
+  // Check super admin credentials directly (not from database)
+  const SUPER_ADMIN_USERNAME = "administrator";
+  const SUPER_ADMIN_PASSWORD = "123*123A";
+
+  if (username !== SUPER_ADMIN_USERNAME || password !== SUPER_ADMIN_PASSWORD) {
+    return { error: "Invalid username or password.", ...loginEcho };
+  }
+
+  // Create a session for super admin
+  // For now, we'll use a special marker in the session
+  const token = await new SignJWT({ sub: "super-admin", type: "super-admin" })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("604800s") // 7 days
+    .sign(new TextEncoder().encode(process.env.AUTH_SECRET || ""));
+
+  const store = await cookies();
+  store.set("cnl_session", token, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 604800,
+  });
+
+  redirect("/admin");
+}
+
+const adminLoginSchema = z.object({
+  login: z.string().trim().min(1, "Enter your email."),
+  password: z.string().min(1, "Enter your password."),
+});
+
+export async function adminLoginAction(
+  _prev: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  const parsed = adminLoginSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) {
+    return { error: "Enter your email and password." };
+  }
+
+  const { login, password } = parsed.data;
+  const loginEcho = { values: { login }, submissionId: crypto.randomUUID() };
+  const user = await prisma.user.findFirst({
+    where: { email: login.toLowerCase(), role: "ADMIN" },
+    select: { id: true, passwordHash: true },
+  });
+
+  const invalid = { error: "Invalid email or password.", ...loginEcho };
+  if (!user) return invalid;
+  if (!(await verifyPassword(password, user.passwordHash))) return invalid;
+
+  await createSession(user.id);
+  redirect("/admin");
 }
 
 export async function logoutAction() {
