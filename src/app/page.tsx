@@ -38,7 +38,7 @@ export default async function AccueilPublicPage() {
                 ✦
               </span>
               <span>
-                Women in STEM · avec le parrainage de la Présidence de la République
+                Women in STEM  Changed By Moon· avec le parrainage de la Présidence de la République
               </span>
             </span>
 
