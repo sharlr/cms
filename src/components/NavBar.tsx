@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useId, useState } from "react";
 import { LogoLockup } from "@/components/Logo";
 import { buttonClass } from "@/components/Button";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import type { NavUser } from "@/components/AppShell";
 
 const PUBLIC_LINKS = [
@@ -62,6 +63,8 @@ export function NavBar({
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
+          <LanguageSwitcher />
+
           {user ? (
             <>
               <Link

@@ -1,0 +1,56 @@
+{
+  "common": {
+    "hello": "Bonjour",
+    "welcome": "Bienvenue",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès"
+  },
+  "nav": {
+    "ranking": "Voir le classement",
+    "participations": "Mes participations",
+    "news": "Actualités",
+    "logout": "Déconnexion"
+  },
+  "home": {
+    "greeting": "Bonjour {name} 👋",
+    "chooseContest": "Choisissez une épreuve pour commencer.",
+    "training": "Entrainement",
+    "lastResult": "Dernier résultat",
+    "seeDetails": "Voir le détail →",
+    "viewAll": "Tout voir →",
+    "information": "Information",
+    "informationPlaceholder": "Les informations relatives au concours seront publiées ici.",
+    "seeRanking": "Voir le classement",
+    "myParticipations": "Mes participations"
+  },
+  "contest": {
+    "edition": "Édition {edition}",
+    "locked": "🔒 Verrouillé",
+    "open": "● Ouvert",
+    "questions": "{count} questions",
+    "secondsPerQuestion": "{seconds} secondes par question",
+    "singleParticipation": "une seule participation",
+    "openingDate": "Ouverture le {date}",
+    "startContest": "Commencer l'épreuve",
+    "train": "S'entraîner",
+    "buttonActivates": "Le bouton s'activera automatiquement à l'heure officielle.",
+    "contestClosed": "L'épreuve est clôturée.",
+    "noQuestions": "Les questions ne sont pas encore publiées.",
+    "notOpened": "L'épreuve n'est pas encore ouverte.",
+    "noPublishedQuestions": "Aucune question publiée.",
+    "unavailable": "Indisponible pour le moment."
+  },
+  "auth": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "email": "Email",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Pas de compte ?",
+    "createAccount": "Créer un compte"
+  },
+  "tagline": "Observez bien… la logique est partout !",
+  "slogan": "Soyons logiques !",
+  "pitch": "Participez au Concours National de Logique et tentez de remporter de nombreux prix !"
+}
